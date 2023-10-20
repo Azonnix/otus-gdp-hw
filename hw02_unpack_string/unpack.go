@@ -2,6 +2,7 @@ package hw02unpackstring
 
 import (
 	"errors"
+	"strings"
 	"unicode"
 )
 
@@ -29,10 +30,7 @@ func Unpack(inputStr string) (string, error) {
 
 			countRune = int(rInputStr[i] - '0')
 		} else {
-			for j := 0; j < countRune; j++ {
-				outStr = string(rInputStr[i]) + outStr
-			}
-
+			outStr = strings.Repeat(string(rInputStr[i]), countRune) + outStr
 			countRune = 1
 		}
 	}
