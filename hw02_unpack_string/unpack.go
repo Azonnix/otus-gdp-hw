@@ -13,6 +13,8 @@ func Unpack(inputStr string) (string, error) {
 		return "", nil
 	}
 
+	inputStr = strings.TrimSpace(inputStr)
+
 	rInputStr := []rune(inputStr)
 
 	if unicode.IsDigit(rInputStr[0]) {
