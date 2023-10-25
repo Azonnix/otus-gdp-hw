@@ -14,28 +14,28 @@ func Unpack(inputStr string) (string, error) {
 	}
 
 	inputStr = strings.TrimSpace(inputStr)
-
 	rInputStr := []rune(inputStr)
 
 	if unicode.IsDigit(rInputStr[0]) {
 		return "", ErrInvalidString
 	}
 
-	countRune := 1
-	outStr := ""
+	stringBuilder := strings.Builder{}
+	lastIndex := len(rInputStr) - 1
 
-	for i := len(rInputStr) - 1; i > -1; i-- {
+	for i := 0; i <= lastIndex; i++ {
 		if unicode.IsDigit(rInputStr[i]) {
-			if i != 0 && unicode.IsDigit(rInputStr[i-1]) {
+			if i != lastIndex && unicode.IsDigit(rInputStr[i+1]) {
 				return "", ErrInvalidString
 			}
-
-			countRune = int(rInputStr[i] - '0')
 		} else {
-			outStr = strings.Repeat(string(rInputStr[i]), countRune) + outStr
-			countRune = 1
+			if i != lastIndex && unicode.IsDigit(rInputStr[i+1]) {
+				stringBuilder.WriteString(strings.Repeat(string(rInputStr[i]), int(rInputStr[i+1]-'0')))
+			} else {
+				stringBuilder.WriteString(string(rInputStr[i]))
+			}
 		}
 	}
 
-	return outStr, nil
+	return stringBuilder.String(), nil
 }
