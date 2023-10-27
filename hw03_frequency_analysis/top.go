@@ -17,7 +17,7 @@ func Top10(inputStr string) []string {
 		wordCountMap[word]++
 	}
 
-	counts := make([]int, len(wordCountMap), len(wordCountMap))
+	counts := make([]int, len(wordCountMap))
 	itr := 0
 
 	for _, val := range wordCountMap {
@@ -35,7 +35,7 @@ func Top10(inputStr string) []string {
 	countWordsMap := make(map[int][]string)
 
 	for _, c := range counts {
-		if _, ok := countWordsMap[c]; ok == true {
+		if _, ok := countWordsMap[c]; ok {
 			continue
 		}
 		countWordsMap[c] = getMapKeys(c, wordCountMap)
