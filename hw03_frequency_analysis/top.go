@@ -29,7 +29,7 @@ func Top10(inputStr string) []string {
 		return counts[i] > counts[j]
 	})
 
-	result := []string{}
+	var result []string
 	countWordsResult := 10
 	counts = counts[:countWordsResult]
 	countWordsMap := make(map[int][]string)
@@ -47,7 +47,7 @@ func Top10(inputStr string) []string {
 }
 
 func getMapKeys(val int, inputMap map[string]int) []string {
-	result := []string{}
+	var result []string
 
 	for k, v := range inputMap {
 		if v == val {
