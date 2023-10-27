@@ -1,7 +1,6 @@
 package hw03frequencyanalysis
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 )
@@ -10,22 +9,18 @@ func Top10(inputStr string) []string {
 	if inputStr == "" {
 		return []string{}
 	}
-	fmt.Println(inputStr)
-	words := strings.Split(inputStr, " ")
-	fmt.Println(words)
-	countWordMap := make(map[string]int)
+
+	words := strings.Fields(inputStr)
+	wordCountMap := make(map[string]int)
 
 	for _, word := range words {
-		fmt.Println(word)
-		countWordMap[word]++
+		wordCountMap[word]++
 	}
 
-	fmt.Println(countWordMap)
-
-	counts := make([]int, len(countWordMap), len(countWordMap))
+	counts := make([]int, len(wordCountMap), len(wordCountMap))
 	itr := 0
 
-	for _, val := range countWordMap {
+	for _, val := range wordCountMap {
 		counts[itr] = val
 		itr++
 	}
@@ -35,23 +30,30 @@ func Top10(inputStr string) []string {
 	})
 
 	result := []string{}
-	counts = counts[:10]
+	countWordsResult := 10
+	counts = counts[:countWordsResult]
+	countWordsMap := make(map[int][]string)
 
-	for key, val := range countWordMap {
-		if isInSlice(val, counts) {
-			result = append(result, key)
+	for _, c := range counts {
+		if _, ok := countWordsMap[c]; ok == true {
+			continue
 		}
+		countWordsMap[c] = getMapKeys(c, wordCountMap)
+		sort.Strings(countWordsMap[c])
+		result = append(result, countWordsMap[c]...)
 	}
 
 	return result
 }
 
-func isInSlice(val int, sli []int) bool {
-	for _, s := range sli {
-		if val == s {
-			return true
+func getMapKeys(val int, inputMap map[string]int) []string {
+	result := []string{}
+
+	for k, v := range inputMap {
+		if v == val {
+			result = append(result, k)
 		}
 	}
 
-	return false
+	return result
 }
