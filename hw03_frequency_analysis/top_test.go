@@ -85,7 +85,6 @@ func TestTop10(t *testing.T) {
 
 	t.Run("english words", func(t *testing.T) {
 		if taskWithAsteriskIsCompleted {
-
 		} else {
 			expected := []string{
 				"can",  // 5
