@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+const countWordsTop10 = 10
+
 func Top10(inputStr string) []string {
 	if inputStr == "" {
 		return []string{}
@@ -30,11 +32,10 @@ func Top10(inputStr string) []string {
 	})
 
 	var result []string
-	countWordsResult := 10
-	counts = counts[:countWordsResult]
+	countsTop10 := counts[:countWordsTop10]
 	countWordsMap := make(map[int][]string)
 
-	for _, c := range counts {
+	for _, c := range countsTop10 {
 		if _, ok := countWordsMap[c]; ok {
 			continue
 		}
