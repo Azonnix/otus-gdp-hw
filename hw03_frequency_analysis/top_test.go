@@ -43,6 +43,9 @@ var text = `Как видите, он  спускается  по  лестни�
 	посидеть у огня и послушать какую-нибудь интересную сказку.
 		В этот вечер...`
 
+var englishText = `a go to a a to go bin bin bin bin b b can can can
+	can can key key key key eng eng eng do do mast`
+
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
 		require.Len(t, Top10(""), 0)
@@ -77,6 +80,25 @@ func TestTop10(t *testing.T) {
 				"то",        // 4
 			}
 			require.Equal(t, expected, Top10(text))
+		}
+	})
+
+	t.Run("english words", func(t *testing.T) {
+		if taskWithAsteriskIsCompleted {
+		} else {
+			expected := []string{
+				"can",  // 5
+				"bin",  // 4
+				"key",  // 4
+				"a",    // 3
+				"eng",  // 3
+				"b",    // 2
+				"do",   // 2
+				"go",   // 2
+				"to",   // 2
+				"mast", // 1
+			}
+			require.Equal(t, expected, Top10(englishText))
 		}
 	})
 }
