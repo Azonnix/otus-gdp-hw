@@ -28,4 +28,4 @@ Thumbs.db
 *.bak
 
 go.work
-go.sum.work
+go.work.sum
