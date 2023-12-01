@@ -10,6 +10,11 @@ type Cache interface {
 	Clear()
 }
 
+type itemValue struct {
+	key   Key
+	value interface{}
+}
+
 type lruCache struct {
 	capacity int
 	mx       sync.Mutex
@@ -29,22 +34,18 @@ func (l *lruCache) Set(key Key, value interface{}) bool {
 	l.mx.Lock()
 	defer l.mx.Unlock()
 	if v, ok := l.items[key]; ok {
-		v.Value = value
+		v.Value = &itemValue{key: key, value: value}
 		l.queue.MoveToFront(v)
 		return true
 	}
 
-	v := l.queue.PushFront(value)
+	v := l.queue.PushFront(&itemValue{key: key, value: value})
 	l.items[key] = v
 
 	if l.queue.Len() > l.capacity {
 		back := l.queue.Back()
 		l.queue.Remove(back)
-		for k, v := range l.items {
-			if v == back {
-				delete(l.items, k)
-			}
-		}
+		delete(l.items, back.Value.(*itemValue).key)
 	}
 
 	return false
@@ -55,7 +56,7 @@ func (l *lruCache) Get(key Key) (interface{}, bool) {
 	defer l.mx.Unlock()
 	if v, ok := l.items[key]; ok {
 		l.queue.MoveToFront(v)
-		return v.Value, true
+		return v.Value.(*itemValue).value, true
 	}
 
 	return nil, false
