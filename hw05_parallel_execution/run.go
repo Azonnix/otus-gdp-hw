@@ -19,9 +19,8 @@ func Run(tasks []Task, n, m int) error {
 	quitChan := make(chan struct{})
 	quitWriteChan := make(chan struct{}, 1)
 	var runErr error
-	var runTasksCount int32
 
-	go RunThreads(taskChan, errChan, doneChan, n, runTasksCount)
+	go RunThreads(taskChan, errChan, doneChan, n)
 	go RunCountErr(runErrChan, errChan, quitChan, m)
 	go RunWriteTasks(tasks, taskChan, quitWriteChan)
 
@@ -39,7 +38,7 @@ func Run(tasks []Task, n, m int) error {
 	return runErr
 }
 
-func RunThreads(taskChan chan Task, errChan chan error, doneChan chan struct{}, n int, runTasksCount int32) {
+func RunThreads(taskChan chan Task, errChan chan error, doneChan chan struct{}, n int) {
 	wg := sync.WaitGroup{}
 
 	for i := 0; i < n; i++ {
