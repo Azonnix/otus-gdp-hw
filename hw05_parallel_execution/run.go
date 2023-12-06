@@ -56,7 +56,7 @@ func RunThreads(taskChan chan Task, errChan chan error, doneChan chan struct{}, 
 				if err != nil {
 					errChan <- err
 				}
-				time.Sleep(1 * time.Microsecond)
+				time.Sleep(1 * time.Millisecond)
 			}
 		}(taskChan, errChan)
 	}
