@@ -17,15 +17,10 @@ func Run(tasks []Task, n, m int) error {
 	}
 
 	var countErr int32
-	var once sync.Once
 	var runErr error
 	wg := sync.WaitGroup{}
 	taskc := make(chan Task, len(tasks))
 	terminatedc := make(chan struct{}, 1)
-
-	closeTerminatedFunc := func() {
-		close(terminatedc)
-	}
 
 	for _, task := range tasks {
 		taskc <- task
@@ -45,7 +40,7 @@ func Run(tasks []Task, n, m int) error {
 					if err := task(); err != nil {
 						atomic.AddInt32(&countErr, 1)
 						if int(atomic.LoadInt32(&countErr)) == m {
-							once.Do(closeTerminatedFunc)
+							close(terminatedc)
 							runErr = ErrErrorsLimitExceeded
 						}
 					}
