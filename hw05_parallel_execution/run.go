@@ -44,7 +44,7 @@ func Run(tasks []Task, n, m int) error {
 				default:
 					if err := task(); err != nil {
 						atomic.AddInt32(&countErr, 1)
-						if int(countErr) == m {
+						if int(atomic.LoadInt32(&countErr)) == m {
 							once.Do(closeTerminatedFunc)
 							runErr = ErrErrorsLimitExceeded
 						}
