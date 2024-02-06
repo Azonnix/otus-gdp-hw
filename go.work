@@ -1,6 +1,0 @@
-go 1.19
-
-use (
-	./hw01_hello_otus
-	./hw05_parallel_execution
-)
