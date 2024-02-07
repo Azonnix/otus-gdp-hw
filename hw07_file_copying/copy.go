@@ -19,8 +19,12 @@ func Copy(fromPath, toPath string, offset, limit int64) error {
 		return err
 	}
 
+	if ok := fromStat.Mode().IsRegular(); !ok {
+		return ErrUnsupportedFile
+	}
+
 	if offset > fromStat.Size() {
-		return errors.New("invalid offset")
+		return ErrOffsetExceedsFileSize
 	}
 
 	if limit == 0 || limit > fromStat.Size() {
