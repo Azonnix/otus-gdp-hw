@@ -24,7 +24,10 @@ func TestCopy(t *testing.T) {
 	}
 
 	t.Run("Error offset exceeds file size", func(t *testing.T) {
-		err := Copy(testCaseOffsetExceeds.from, testCaseOffsetExceeds.to, testCaseOffsetExceeds.offset, testCaseOffsetExceeds.limit)
+		err := Copy(testCaseOffsetExceeds.from,
+			testCaseOffsetExceeds.to,
+			testCaseOffsetExceeds.offset,
+			testCaseOffsetExceeds.limit)
 		require.ErrorIs(t, err, testCaseOffsetExceeds.expected)
 	})
 }
