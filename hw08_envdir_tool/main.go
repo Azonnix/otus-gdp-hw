@@ -21,6 +21,7 @@ func main() {
 	for k, v := range environmentsDir {
 		if v.NeedRemove {
 			delete(environments, k)
+			continue
 		}
 
 		environments[k] = v
