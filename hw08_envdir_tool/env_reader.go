@@ -31,7 +31,7 @@ func ReadDir(dir string) (Environment, error) {
 				continue
 			}
 
-			content, err := os.Open(dir + entryDir.Name())
+			content, err := os.Open(dir + "/" + entryDir.Name())
 			if err != nil {
 				return nil, err
 			}

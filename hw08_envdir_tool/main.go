@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 	"strings"
 )
@@ -8,6 +9,7 @@ import (
 func main() {
 	environmentsDir, err := ReadDir(os.Args[1])
 	if err != nil {
+		log.Println(err)
 		os.Exit(1)
 	}
 
