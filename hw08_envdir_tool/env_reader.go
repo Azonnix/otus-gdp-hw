@@ -31,16 +31,22 @@ func ReadDir(dir string) (Environment, error) {
 				continue
 			}
 
-			content, err := os.Open(entryDir.Name())
+			content, err := os.Open(dir + entryDir.Name())
 			if err != nil {
 				return nil, err
 			}
-			contentReader := bufio.NewReader(content)
 
-			if contentReader.Size() == 0 {
-				environments[entryDir.Name()] = EnvValue{NeedRemove: true}
+			stat, err := content.Stat()
+			if err != nil {
+				return environments, err
+			}
+
+			if stat.Size() == 0 {
+				environments[entryDir.Name()] = EnvValue{NeedRemove: false}
 				continue
 			}
+
+			contentReader := bufio.NewReader(content)
 
 			line, _, err := contentReader.ReadLine()
 			if err != nil {
