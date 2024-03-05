@@ -26,41 +26,39 @@ func ReadDir(dir string) (Environment, error) {
 	environments := make(Environment)
 
 	for _, entryDir := range entrysDir {
-		if !entryDir.Type().IsDir() {
-			if strings.Contains(entryDir.Name(), "=") {
-				continue
-			}
+		if strings.Contains(entryDir.Name(), "=") {
+			continue
+		}
 
-			content, err := os.Open(dir + "/" + entryDir.Name())
-			if err != nil {
-				return nil, err
-			}
+		content, err := os.Open(dir + "/" + entryDir.Name())
+		if err != nil {
+			return nil, err
+		}
 
-			stat, err := content.Stat()
-			if err != nil {
-				return environments, err
-			}
+		stat, err := content.Stat()
+		if err != nil {
+			return environments, err
+		}
 
-			if stat.Size() == 0 {
-				environments[entryDir.Name()] = EnvValue{NeedRemove: false}
-				continue
-			}
+		if stat.Size() == 0 {
+			environments[entryDir.Name()] = EnvValue{NeedRemove: false}
+			continue
+		}
 
-			contentReader := bufio.NewReader(content)
+		contentReader := bufio.NewReader(content)
 
-			line, _, err := contentReader.ReadLine()
-			if err != nil {
-				return nil, err
-			}
+		line, _, err := contentReader.ReadLine()
+		if err != nil {
+			return nil, err
+		}
 
-			if len(line) == 0 {
-				environments[entryDir.Name()] = EnvValue{}
-				continue
-			}
+		if len(line) == 0 {
+			environments[entryDir.Name()] = EnvValue{}
+			continue
+		}
 
-			environments[entryDir.Name()] = EnvValue{
-				Value: strings.TrimRight(string(bytes.ReplaceAll(line, []byte("\x00"), []byte("\n"))), " "),
-			}
+		environments[entryDir.Name()] = EnvValue{
+			Value: strings.TrimRight(string(bytes.ReplaceAll(line, []byte("\x00"), []byte("\n"))), " "),
 		}
 	}
 
