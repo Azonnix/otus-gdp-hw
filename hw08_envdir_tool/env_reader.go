@@ -41,7 +41,7 @@ func ReadDir(dir string) (Environment, error) {
 		}
 
 		if stat.Size() == 0 {
-			environments[entryDir.Name()] = EnvValue{NeedRemove: false}
+			environments[entryDir.Name()] = EnvValue{NeedRemove: true}
 			continue
 		}
 
