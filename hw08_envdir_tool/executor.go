@@ -8,6 +8,11 @@ import (
 
 // RunCmd runs a command + arguments (cmd) with environment variables from env.
 func RunCmd(cmd []string, env Environment) (returnCode int) {
+	if len(cmd) == 0 {
+		returnCode = 1
+		return
+	}
+
 	inputCommand := cmd[0]
 	command := exec.Command(inputCommand, cmd[1:]...)
 
